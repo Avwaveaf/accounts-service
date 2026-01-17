@@ -4,6 +4,7 @@ import com.avwaveaf.accounts.constants.AccountConstants;
 import com.avwaveaf.accounts.dto.CustomerDTO;
 import com.avwaveaf.accounts.entity.Accounts;
 import com.avwaveaf.accounts.entity.Customer;
+import com.avwaveaf.accounts.exception.CustomerAlreadyExists;
 import com.avwaveaf.accounts.mapper.CustomerMapper;
 import com.avwaveaf.accounts.repository.AccountsRepository;
 import com.avwaveaf.accounts.repository.CustomerRepository;
@@ -11,6 +12,8 @@ import com.avwaveaf.accounts.service.IAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -27,16 +30,26 @@ public class AccountServiceImpl implements IAccountService {
      */
     @Override
     public void createAccount(CustomerDTO customerDTO) {
-        Customer customer  = CustomerMapper.toEntity(customerDTO, new Customer());
+        Customer customer = CustomerMapper.toEntity(customerDTO, new Customer());
+
+        Optional<Customer> eCustomer = customerRepository.findByMobileNumber(customerDTO.getMobileNumber());
+
+        if (eCustomer.isPresent())
+            throw new CustomerAlreadyExists("Customer Already Registered for this Moblile Number");
+
+        customer.setCreatedAt(LocalDateTime.now());
+        customer.setCreatedBy("Guest");
+
         Customer sCustomer = customerRepository.save(customer);
-        accountsRepository.save(createNewAccount(sCustomer))
+        accountsRepository.save(createNewAccount(sCustomer));
     }
 
     /**
      * (HELPER-MTHD)
      * Create New Account Object Helper which generate
      * automatic account number, setting default type and branch address
-     * @param customer  [Object]
+     *
+     * @param customer [Object]
      * @return Accounts [NEW - Object]
      */
     private Accounts createNewAccount(Customer customer) {
@@ -46,6 +59,9 @@ public class AccountServiceImpl implements IAccountService {
                 .accountType(AccountConstants.SAVINGS)
                 .branchAddress(AccountConstants.ADDRESS)
                 .build();
+        accounts.setCreatedAt(LocalDateTime.now());
+        accounts.setCreatedBy("Guest");
+
         return accounts;
     }
 
