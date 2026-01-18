@@ -1,10 +1,13 @@
 package com.avwaveaf.accounts.service.impl;
 
 import com.avwaveaf.accounts.constants.AccountConstants;
+import com.avwaveaf.accounts.dto.AccountsDTO;
 import com.avwaveaf.accounts.dto.CustomerDTO;
 import com.avwaveaf.accounts.entity.Accounts;
 import com.avwaveaf.accounts.entity.Customer;
 import com.avwaveaf.accounts.exception.CustomerAlreadyExists;
+import com.avwaveaf.accounts.exception.ResourceNotFoundException;
+import com.avwaveaf.accounts.mapper.AccountsMapper;
 import com.avwaveaf.accounts.mapper.CustomerMapper;
 import com.avwaveaf.accounts.repository.AccountsRepository;
 import com.avwaveaf.accounts.repository.CustomerRepository;
@@ -42,6 +45,25 @@ public class AccountServiceImpl implements IAccountService {
 
         Customer sCustomer = customerRepository.save(customer);
         accountsRepository.save(createNewAccount(sCustomer));
+    }
+
+    /**
+     * @param mobileNumber customer mobile number field
+     * @return CustomerDTO - object
+     */
+    @Override
+    public CustomerDTO getAccountDetail(String mobileNumber) {
+        Customer customer = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+
+        Accounts acc = accountsRepository.findByCustomerId(customer.getCustomerId()).orElseThrow(
+                () -> new ResourceNotFoundException("Accounts", "customerId", customer.getCustomerId().toString())
+        );
+
+        CustomerDTO res = CustomerMapper.toDTO(customer, new CustomerDTO());
+        res.setAccounts(AccountsMapper.toDTO(acc, new AccountsDTO()));
+        return res;
     }
 
     /**

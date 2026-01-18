@@ -8,4 +8,6 @@ public interface IAccountService {
      * @param customerDTO - Customer DTO Object
      */
     void createAccount(CustomerDTO customerDTO);
+
+    CustomerDTO getAccountDetail(String mobileNumber);
 }
