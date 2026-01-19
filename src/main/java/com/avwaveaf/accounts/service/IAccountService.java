@@ -16,4 +16,11 @@ public interface IAccountService {
     * @param updatedCustomer - CustomerDTO Object
     * */
     boolean updateAccount(CustomerDTO updatedCustomer);
+
+    /**
+     * handle delete account based on mobile number
+     * @param mobileNumber - [String]
+     * @return boolean success flag
+     * */
+    boolean deleteAccount(String mobileNumber);
 }

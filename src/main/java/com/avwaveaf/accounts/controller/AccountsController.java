@@ -3,6 +3,7 @@ package com.avwaveaf.accounts.controller;
 import com.avwaveaf.accounts.constants.AccountConstants;
 import com.avwaveaf.accounts.dto.CustomerDTO;
 import com.avwaveaf.accounts.dto.ResponseDTO;
+import com.avwaveaf.accounts.helper.OpsResHelper;
 import com.avwaveaf.accounts.service.IAccountService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -35,5 +36,22 @@ public class AccountsController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(customerDTO);
+    }
+
+
+    @PutMapping("/update")
+    public ResponseEntity<ResponseDTO> updateAccountsDetail(
+            @RequestBody CustomerDTO customerDTO
+    ) {
+        boolean isUpdated = accountService.updateAccount(customerDTO);
+        return OpsResHelper.handleOperations(isUpdated);
+    }
+
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDTO> deleteAccounts(
+            @RequestParam(name = "mobileNumber") String phoneNumber
+    ){
+        boolean isDeleted = accountService.deleteAccount(phoneNumber);
+        return OpsResHelper.handleOperations(isDeleted);
     }
 }

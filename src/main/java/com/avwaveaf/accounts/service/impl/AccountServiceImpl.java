@@ -99,6 +99,23 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     /**
+     * handle delete account based on mobile number
+     *
+     * @param mobileNumber - [String]
+     * @return boolean success flag
+     *
+     */
+    @Override
+    public boolean deleteAccount(String mobileNumber) {
+        Customer foundCust = customerRepository.findByMobileNumber(mobileNumber).orElseThrow(
+                () -> new ResourceNotFoundException("Customer", "mobileNumber", mobileNumber)
+        );
+        accountsRepository.deleteByCustomerId(foundCust.getCustomerId());
+        customerRepository.deleteById(foundCust.getCustomerId());
+        return true;
+    }
+
+    /**
      * (HELPER-MTHD)
      * Create New Account Object Helper which generate
      * automatic account number, setting default type and branch address
