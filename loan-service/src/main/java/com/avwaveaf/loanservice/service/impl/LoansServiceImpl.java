@@ -11,6 +11,7 @@ import com.avwaveaf.loanservice.service.ILoansService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -23,9 +24,8 @@ public class LoansServiceImpl implements ILoansService {
      */
     @Override
     public void createLoan(String mobileNumber) {
-        loansRepository.findByMobileNumber(mobileNumber).orElseThrow(
-                () -> new ResourceAlreadyExistException("Loans", "mobileNumber", mobileNumber)
-        );
+        Optional<Loans> found = loansRepository.findByMobileNumber(mobileNumber);
+        if(found.isPresent()) throw new ResourceAlreadyExistException("Loans", "mobileNumber", mobileNumber);
         loansRepository.save(createNewLoan(mobileNumber));
     }
 
@@ -49,6 +49,7 @@ public class LoansServiceImpl implements ILoansService {
     public boolean updateLoan(LoansDTO loansDto) {
         Loans found = findByPhoneNumberOrThrowNotFound(loansDto.getMobileNumber());
         LoansMapper.toEntity(loansDto, found);
+        loansRepository.save(found);
         return true;
     }
 

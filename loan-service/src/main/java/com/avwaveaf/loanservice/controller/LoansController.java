@@ -30,7 +30,7 @@ public class LoansController {
 
     private final ILoansService loansService;
 
-    private static final String MOBILE_REGEX = "^08[1-9][0-9]{7,10}$";
+    private static final String MOBILE_REGEX = "^08[1-9][0-9]{7,12}$";
 
     @Operation(
             summary = "Create a new loan",

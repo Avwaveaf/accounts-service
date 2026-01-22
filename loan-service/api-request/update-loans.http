@@ -1,0 +1,13 @@
+### PUT request to update exisitng lonas
+PUT http://localhost:8082/api/v1/loans
+Content-Type: application/json
+
+{
+  "mobileNumber": "081234567891",
+  "loanNumber": "100189988024",
+  "loanType": "Home Loans",
+  "totalLoan": 100000,
+  "amountPaid": 0,
+  "outstandingAmount": 100000
+}
+###
