@@ -1,6 +1,6 @@
-package com.avwaveaf.cardsservice;
+package com.avwaveaf.loanservice;
 
-import com.avwaveaf.cardsservice.constants.BeansConst;
+import com.avwaveaf.loanservice.constants.BeansConst;
 import io.swagger.v3.oas.annotations.ExternalDocumentation;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Contact;
@@ -14,10 +14,10 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EnableJpaAuditing(auditorAwareRef = BeansConst.AUDIT_AWARE_IMPL)
 @OpenAPIDefinition(
         info = @Info(
-                title = "Cards Service API",
+                title = "Loan Service API",
                 description = """
-                        Cards Service REST API responsible for issuing, managing,
-                        and maintaining customer debit and credit card information.
+                        Loan Service REST API for managing customer loan lifecycle,
+                        including loan creation, retrieval, updates, and repayments.
                         
                         This service is part of the eBank microservices ecosystem.
                         """,
@@ -33,14 +33,14 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
                 )
         ),
         externalDocs = @ExternalDocumentation(
-                description = "Cards Service – API Reference & Architecture",
-                url = "https://github.com/Avwaveaf/ebank/wiki/cards-service"
+                description = "Loan Service – API Reference & Architecture",
+                url = "https://github.com/Avwaveaf/ebank/wiki/loan-service"
         )
 )
-public class CardsServiceApplication {
+public class LoanServiceApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CardsServiceApplication.class, args);
+        SpringApplication.run(LoanServiceApplication.class, args);
     }
 
 }
