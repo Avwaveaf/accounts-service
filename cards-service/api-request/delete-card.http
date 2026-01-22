@@ -1,0 +1,3 @@
+### DELETE request to cards
+DELETE http://localhost:8081/api/v1/cards?mobileNumber=123456789112
+###

@@ -15,4 +15,16 @@ public interface ICardService {
      * @param phoneNumber - Customer Phone Number
      * */
     CardsDTO findByPhoneNumber(String phoneNumber);
+
+    /**
+     * Update Cards Information
+     * @param cardsDTO - CardsDTO Object
+     * */
+    boolean updateCard(CardsDTO cardsDTO);
+
+    /**
+     *  Delete Cards by Phone Number
+     * @param phoneNumber - Customer Phone Number
+     * */
+    boolean deleteCard(String phoneNumber);
 }

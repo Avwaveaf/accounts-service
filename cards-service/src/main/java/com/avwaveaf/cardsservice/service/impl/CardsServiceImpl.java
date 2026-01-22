@@ -9,7 +9,6 @@ import com.avwaveaf.cardsservice.repository.CardsRepository;
 import com.avwaveaf.cardsservice.service.ICardService;
 import com.avwaveaf.cardsservice.service.handler.CardGenerationHandler;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -46,9 +45,40 @@ public class CardsServiceImpl implements ICardService {
      */
     @Override
     public CardsDTO findByPhoneNumber(String phoneNumber) {
-        Cards found = cardsRepository.findByMobileNumber(phoneNumber).orElseThrow(
-                () -> new ResourceNotFoundException("Cards", "mobileNumber", phoneNumber)
-        );
+        Cards found = findByPhoneNumberOrThrowNotFound(phoneNumber);
         return CardMapper.toDTO(found);
+    }
+
+    /**
+     * Update Cards Information
+     *
+     * @param cardsDTO - CardsDTO Object
+     *
+     */
+    @Override
+    public boolean updateCard(CardsDTO cardsDTO) {
+        Cards found = findByPhoneNumberOrThrowNotFound(cardsDTO.getMobileNumber());
+        CardMapper.toEntity(found, cardsDTO);
+        cardsRepository.save(found);
+        return true;
+    }
+
+    /**
+     * Delete Cards by Phone Number
+     *
+     * @param phoneNumber - Customer Phone Number
+     *
+     */
+    @Override
+    public boolean deleteCard(String phoneNumber) {
+        Cards found = findByPhoneNumberOrThrowNotFound(phoneNumber);
+        cardsRepository.deleteById(found.getCardId());
+        return true;
+    }
+
+    private Cards findByPhoneNumberOrThrowNotFound(String query) {
+        return cardsRepository.findByMobileNumber(query).orElseThrow(
+                () -> new ResourceNotFoundException("Cards", "mobileNumber", query)
+        );
     }
 }

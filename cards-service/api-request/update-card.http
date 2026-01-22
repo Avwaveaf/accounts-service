@@ -1,0 +1,13 @@
+### PUT request to update cards detail
+PUT http://localhost:8081/api/v1/cards
+Content-Type: application/json
+
+{
+  "mobileNumber": "123456789112",
+  "cardNumber": "4665014294153953",
+  "cardType": "VISA_CLASSIC",
+  "totalLimit": 10000000,
+  "amountUsed": 10000,
+  "availableAmount": 10000000
+}
+###

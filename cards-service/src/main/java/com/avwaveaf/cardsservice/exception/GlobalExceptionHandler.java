@@ -53,11 +53,11 @@ public class GlobalExceptionHandler {
         // Builds error response with resource not found details
         ErrorResponseDTO err = ErrorResponseDTO.builder()
                 .apiPath(request.getDescription(false))
-                .errorCode(HttpStatus.BAD_REQUEST)
+                .errorCode(HttpStatus.NOT_FOUND)
                 .errorMessage(ex.getMessage())
                 .timestamp(java.time.LocalDateTime.now())
                 .build();
-        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(err, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ResourceAlreadyExistException.class)

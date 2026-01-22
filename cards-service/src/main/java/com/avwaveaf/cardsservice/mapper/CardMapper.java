@@ -14,4 +14,13 @@ public class CardMapper {
                 .amountUsed(cards.getAmountUsed())
                 .build();
     }
+
+    public static void toEntity(Cards cards, CardsDTO cardsDTO) {
+        cards.setCardNumber(cardsDTO.getCardNumber());
+        cards.setAvailableAmount(cardsDTO.getAvailableAmount());
+        cards.setAmountUsed(cardsDTO.getAmountUsed());
+        cards.setTotalLimit(cardsDTO.getTotalLimit());
+        cards.setCardType(cardsDTO.getCardType());
+        cards.setMobileNumber(cardsDTO.getMobileNumber());
+    }
 }
